@@ -11,6 +11,20 @@ interface Props {
 export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
   const [copiedSection, setCopiedSection] = useState<string | null>(null);
   const [regeneratingSection, setRegeneratingSection] = useState<string | null>(null);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+
+  const heroImages = [
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop"
+  ];
+
+  const cycleHeroImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setHeroImageIndex((prev) => (prev + 1) % heroImages.length);
+  };
 
   const handleCopy = (text: string, sectionId: string) => {
     navigator.clipboard.writeText(text);
@@ -101,20 +115,47 @@ export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
         title="1. Core Typography Engine" 
         textToCopy={`# ${copy.homepage.headline}\n\n${copy.homepage.subheadline}\n\n${copy.homepage.intro}`}
       >
-        <div className="flex flex-col gap-6" contentEditable suppressContentEditableWarning>
-          <div className="text-center py-4">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#121619] dark:text-[#F1F3F5] leading-tight outline-none mb-4">
-              {copy.homepage.headline}
-            </h1>
-            <p className="text-lg font-sans text-[#4D5358] dark:text-[#DDE1E6] max-w-xl mx-auto leading-relaxed outline-none">
-              {copy.homepage.subheadline}
-            </p>
+        <div className="flex flex-col gap-0 overflow-hidden rounded-xl border border-[#DDE1E6] dark:border-[#343A3F] group relative" contentEditable suppressContentEditableWarning>
+          <div className="w-full h-56 sm:h-72 relative bg-[#E8EAED] dark:bg-[#121619] overflow-hidden" contentEditable={false}>
+            <img 
+              key={heroImageIndex} /* Force re-render for transition if needed */
+              src={heroImages[heroImageIndex]} 
+              alt="Hero background" 
+              className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10"></div>
+            
+            <button 
+              onClick={cycleHeroImage}
+              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors z-20 border border-white/20"
+            >
+              <RefreshCw className="w-3 h-3" />
+              Change Image
+            </button>
+            <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white text-[9px] uppercase tracking-widest px-2 py-1 rounded border border-white/20 opacity-80 z-20">
+              Image {heroImageIndex + 1} of {heroImages.length}
+            </div>
           </div>
-          <div className="border-t border-[#DDE1E6] dark:border-[#343A3F] pt-6 mt-2">
-            <h4 className="text-[10px] font-bold text-[#0052CC] dark:text-[#4589ff] uppercase mb-3 tracking-widest">Introduction Story</h4>
-            <p className="text-sm font-sans text-[#1A1C1E] dark:text-[#DDE1E6] leading-relaxed outline-none max-w-3xl">
-              {copy.homepage.intro}
-            </p>
+          
+          <div className="relative -mt-32 sm:-mt-40 px-6 sm:px-8 z-10 pb-6 sm:pb-8 flex flex-col items-start text-left">
+            <div className="w-full max-w-3xl mb-8">
+              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white leading-tight mb-4 drop-shadow-lg">
+                {copy.homepage.headline}
+              </h1>
+              <p className="text-sm sm:text-lg font-sans text-white/90 leading-relaxed drop-shadow-md">
+                {copy.homepage.subheadline}
+              </p>
+            </div>
+            
+            <div className="w-full bg-white/95 dark:bg-[#1A1C1E]/95 backdrop-blur-xl rounded-xl p-6 sm:p-8 border border-white/20 dark:border-[#343A3F] shadow-xl">
+              <div className="flex items-center gap-3 mb-4" contentEditable={false}>
+                <div className="w-8 h-[2px] bg-[#0052CC] dark:bg-[#4589ff]"></div>
+                <h4 className="text-[10px] font-bold text-[#0052CC] dark:text-[#4589ff] uppercase tracking-widest">Introduction</h4>
+              </div>
+              <p className="text-sm sm:text-base font-sans text-[#4D5358] dark:text-[#DDE1E6] leading-relaxed">
+                {copy.homepage.intro}
+              </p>
+            </div>
           </div>
         </div>
       </SectionCard>

@@ -182,20 +182,13 @@ ${s.description}
 
   const safeName = businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  const brand = React.useMemo(() => {
+  const { baseHue, fontPair } = React.useMemo(() => {
     let hash = 0;
     const str = businessName || 'Brand';
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     const index = Math.abs(hash);
-    const palettes = [
-      { p: '#0F172A', a: '#3B82F6', b: '#F8FAFC' },
-      { p: '#18181B', a: '#10B981', b: '#FAFAFA' },
-      { p: '#312E81', a: '#F43F5E', b: '#EEF2FF' },
-      { p: '#14532D', a: '#EAB308', b: '#F0FDF4' },
-      { p: '#4C1D95', a: '#F97316', b: '#F5F3FF' },
-    ];
     const fonts = [
       { h: 'Outfit', b: 'Inter' },
       { h: 'Playfair Display', b: 'DM Sans' },
@@ -204,10 +197,37 @@ ${s.description}
       { h: 'Syne', b: 'Work Sans' },
     ];
     return {
-      colors: palettes[index % palettes.length],
-      fonts: fonts[index % fonts.length]
+      baseHue: index % 360,
+      fontPair: fonts[index % fonts.length]
     };
   }, [businessName]);
+
+  const [customHue, setCustomHue] = useState<number | null>(null);
+  const [customSat, setCustomSat] = useState<number | null>(null);
+
+  React.useEffect(() => {
+    setCustomHue(null);
+    setCustomSat(null);
+  }, [baseHue]);
+
+  const currentHue = customHue !== null ? customHue : baseHue;
+  const currentSat = customSat !== null ? customSat : 75;
+
+  const brand = React.useMemo(() => {
+    const accSat = Math.min(100, currentSat + 10);
+    const bgSat = Math.max(0, currentSat - 60);
+
+    const complementaryHue = (currentHue + 180) % 360;
+    
+    return {
+      colors: {
+        p: `hsl(${currentHue}, ${currentSat}%, 25%)`,
+        a: `hsl(${complementaryHue}, ${accSat}%, 55%)`,
+        b: `hsl(${currentHue}, ${bgSat}%, 98%)`,
+      },
+      fonts: fontPair
+    };
+  }, [currentHue, currentSat, fontPair]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -222,6 +242,33 @@ ${s.description}
           <div className="flex-1 h-8 rounded-md shadow-inner border border-black/10" style={{ backgroundColor: brand.colors.p }} title="Primary"></div>
           <div className="flex-1 h-8 rounded-md shadow-inner border border-black/10" style={{ backgroundColor: brand.colors.a }} title="Accent"></div>
           <div className="flex-1 h-8 rounded-md shadow-inner border border-black/10" style={{ backgroundColor: brand.colors.b }} title="Background"></div>
+        </div>
+
+        <div className="flex flex-col gap-3 mt-1 mb-1">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between text-[9px] text-[#697077] dark:text-[#A2A9B0] uppercase font-bold tracking-wider">
+              <span>Hue</span>
+              <span>{Math.round(currentHue)}°</span>
+            </div>
+            <input 
+              type="range" min="0" max="360" 
+              value={currentHue}
+              onChange={(e) => setCustomHue(Number(e.target.value))}
+              className="w-full h-1.5 bg-[#DDE1E6] dark:bg-[#343A3F] rounded-lg appearance-none cursor-pointer accent-[#0052CC]"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between text-[9px] text-[#697077] dark:text-[#A2A9B0] uppercase font-bold tracking-wider">
+              <span>Saturation</span>
+              <span>{Math.round(currentSat)}%</span>
+            </div>
+            <input 
+              type="range" min="0" max="100" 
+              value={currentSat}
+              onChange={(e) => setCustomSat(Number(e.target.value))}
+              className="w-full h-1.5 bg-[#DDE1E6] dark:bg-[#343A3F] rounded-lg appearance-none cursor-pointer accent-[#0052CC]"
+            />
+          </div>
         </div>
 
         <div className="bg-[#F8F9FA] dark:bg-[#1A1C1E] p-2.5 rounded border border-[#DDE1E6] dark:border-[#343A3F] font-mono text-[9px] text-[#4D5358] dark:text-[#A2A9B0] overflow-x-auto leading-relaxed">

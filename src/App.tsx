@@ -81,18 +81,45 @@ export default function App() {
 
       <main className="flex-1 flex gap-3 p-3 overflow-hidden">
         {!copy ? (
-          <div className="w-full max-w-2xl mx-auto flex flex-col overflow-y-auto h-full pr-2 pb-8">
-            <div className="mb-4 mt-8">
-              <h2 className="text-lg font-bold tracking-tight text-[#1A1C1E] dark:text-[#F1F3F5] uppercase">Business Configuration</h2>
-              <p className="mt-1 text-xs text-[#697077] dark:text-[#A2A9B0]">Enter details to generate conversion-optimised website copy.</p>
-            </div>
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded text-red-600 dark:text-red-400 text-xs font-mono">
-                {error}
+          <div className="w-full max-w-5xl mx-auto flex items-center lg:items-start flex-col lg:flex-row gap-8 overflow-y-auto h-full pr-2 pb-8 pt-6 lg:pt-12">
+            <div className="flex-1 w-full max-w-xl mx-auto lg:mx-0 flex flex-col z-10">
+              <div className="mb-6 lg:mb-8">
+                <h2 className="text-3xl lg:text-4xl font-serif font-bold tracking-tight text-[#1A1C1E] dark:text-[#F1F3F5] mb-3 leading-tight">
+                  Automate your<br/>website copywriting.
+                </h2>
+                <p className="text-sm lg:text-base text-[#697077] dark:text-[#A2A9B0] leading-relaxed max-w-md">
+                  Enter your business details below, and our Gemini-powered engine will generate conversion-optimised website copy, brand identity colors, and typography suggestions instantly.
+                </p>
               </div>
-            )}
-            <div className="bg-white dark:bg-[#21272A] p-4 shadow-sm rounded-lg border border-[#DDE1E6] dark:border-[#343A3F] transition-colors">
-              <BusinessForm onSubmit={handleGenerate} loading={loading} />
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded text-red-600 dark:text-red-400 text-xs font-mono shadow-sm">
+                  {error}
+                </div>
+              )}
+              <div className="bg-white dark:bg-[#21272A] p-5 lg:p-6 shadow-xl rounded-xl border border-[#DDE1E6] dark:border-[#343A3F] transition-colors relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute top-0 right-0 p-4 opacity-[0.03]  dark:opacity-10 pointer-events-none">
+                  <Sparkles className="w-32 h-32 text-[#0052CC] mix-blend-multiply dark:mix-blend-screen" />
+                </div>
+                <BusinessForm onSubmit={handleGenerate} loading={loading} />
+              </div>
+            </div>
+
+            <div className="hidden lg:flex flex-1 flex-col justify-center items-center min-h-[500px] w-full max-w-md relative mt-4">
+              <div className="w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/20 dark:border-[#343A3F]/50">
+                <img 
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" 
+                  alt="Website design planning" 
+                  className="w-full h-full object-cover scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 flex flex-col justify-end p-8 text-white">
+                  <h3 className="font-serif text-2xl font-bold mb-2">Crafting your story.</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed text-balance">
+                    Every great business needs compelling copy. Provide the context, and watch the AI structure it for you.
+                  </p>
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#0052CC] rounded-full blur-[100px] opacity-20 dark:opacity-30 pointer-events-none"></div>
+              <div className="absolute -top-10 -right-10 w-64 h-64 bg-purple-500 rounded-full blur-[80px] opacity-20 dark:opacity-30 pointer-events-none"></div>
             </div>
           </div>
         ) : (
