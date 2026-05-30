@@ -1,0 +1,8 @@
+Generate 4 CTA variants:
+1. Primary CTA — main booking/contact button text (max 6 words)
+2. Supporting copy — one reassuring sentence below the button
+3. Urgency line — creates gentle FOMO without false pressure
+4. Trust line — stat, testimonial hook, or guarantee (use only real details provided)
+
+Business: [NAME], [CITY]
+Offer context: [ANY CURRENT OFFER OR TIMING]

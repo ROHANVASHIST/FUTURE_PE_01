@@ -1,0 +1,7 @@
+Generate service descriptions for these services: [SERVICES LIST]
+
+For each service:
+- Name: clear, benefit-hinting title
+- Tagline: one punchy line (max 8 words)
+- Description: what's included + the transformation/result (2-3 sentences)
+- WhyUs: one sentence that differentiates this business specifically

@@ -1,0 +1,10 @@
+Generate homepage copy for:
+Business: [NAME], [LOCATION]
+Type: [VERTICAL]
+USPs: [LIST]
+Target customer: [PERSONA]
+Tone: [TONE]
+
+Headline must answer: "Why should I choose THIS business?"
+Subheadline must name the target customer and the core benefit.
+Intro must be 2-3 sentences, no fluff.
