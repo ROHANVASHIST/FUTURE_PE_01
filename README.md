@@ -1,30 +1,20 @@
-# AI Website Copy Generator
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-EXAMPLE FORMAT :-
-## Business Chosen
-Aura Salon & Spa, Indiranagar, Bengaluru
+# Run and deploy your AI Studio app
 
-## What This Does
-A structured prompt system that generates conversion-focused website copy
-for local businesses using the Gemini API.
+This contains everything you need to run your app locally.
 
-## Prompt Logic
-- System prompt sets AI role, output contract, and quality rules
-- User prompt is dynamically assembled from business input fields
-- Tone map adjusts language style per business vertical
-- Zod schema validates all AI output before display
+View your app in AI Studio: https://ai.studio/apps/98a30ae5-3831-4e38-bc4f-b34f41befd45
 
-## Tools Used
-- Gemini (@google/genai API)
-- React + Vite + Express (Full-Stack adapted from Next.js spec)
-- Tailwind CSS
-- Zod
+## Run Locally
 
-## How to Run
-1. Clone repo
-2. Add GEMINI_API_KEY to .env.local / .env
-3. npm install && npm run dev
-4. Open http://localhost:3000
+**Prerequisites:**  Node.js
 
-## Generated Outputs
-See /outputs folder for full copy samples.
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

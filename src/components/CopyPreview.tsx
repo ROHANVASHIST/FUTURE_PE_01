@@ -166,17 +166,33 @@ export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
         textToCopy={copy.services.map(s => `### ${s.name}\n**${s.tagline}**\n${s.description}\n*Why Us: ${s.whyUs}*`).join('\n\n')}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5" contentEditable suppressContentEditableWarning>
-          {copy.services.map((service, idx) => (
-            <div key={idx} className="p-5 bg-[#F8F9FA] dark:bg-[#1A1C1E] border border-[#DDE1E6] dark:border-[#343A3F] rounded-xl flex flex-col outline-none cursor-text shadow-sm hover:border-[#0052CC] dark:hover:border-[#4589ff] transition-colors hover:shadow-md">
-              <h3 className="text-lg font-serif font-bold text-[#1A1C1E] dark:text-[#F1F3F5]">{service.name}</h3>
-              <p className="text-[11px] font-sans font-bold uppercase text-[#0052CC] dark:text-[#4589ff] mt-1 mb-3 tracking-widest">{service.tagline}</p>
-              <p className="text-sm text-[#4D5358] dark:text-[#A2A9B0] leading-relaxed flex-1">{service.description}</p>
-              <div className="mt-4 pt-4 border-t border-[#DDE1E6] dark:border-[#343A3F]">
-                <p className="text-[9px] font-bold text-[#878D96] dark:text-[#697077] uppercase tracking-wider mb-1.5">Differentiator</p>
-                <p className="text-sm italic font-serif text-[#1A1C1E] dark:text-[#DDE1E6] leading-snug">"{service.whyUs}"</p>
+          {copy.services.map((service, idx) => {
+            const serviceImages = [
+              "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop"
+            ];
+            const imgSrc = serviceImages[idx % serviceImages.length];
+
+            return (
+              <div key={idx} className="bg-[#F8F9FA] dark:bg-[#1A1C1E] border border-[#DDE1E6] dark:border-[#343A3F] rounded-xl flex flex-col outline-none cursor-text shadow-sm hover:border-[#0052CC] dark:hover:border-[#4589ff] transition-colors hover:shadow-md overflow-hidden group">
+                <div className="relative h-32 w-full overflow-hidden" contentEditable={false}>
+                  <img src={imgSrc} alt={service.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <h3 className="absolute bottom-3 left-4 right-4 text-lg font-serif font-bold text-white drop-shadow-md leading-tight">{service.name}</h3>
+                </div>
+                <div className="p-5 flex flex-col flex-1">
+                  <p className="text-[10px] font-sans font-bold uppercase text-[#0052CC] dark:text-[#4589ff] mb-2 tracking-widest leading-normal">{service.tagline}</p>
+                  <p className="text-sm text-[#4D5358] dark:text-[#A2A9B0] leading-relaxed flex-1 mb-4">{service.description}</p>
+                  <div className="pt-4 border-t border-[#DDE1E6] dark:border-[#343A3F]">
+                    <p className="text-[9px] font-bold text-[#878D96] dark:text-[#697077] uppercase tracking-wider mb-1.5 flex items-center gap-1"><Check className="w-3 h-3 text-[#0052CC]" /> Differentiator</p>
+                    <p className="text-sm italic font-serif text-[#1A1C1E] dark:text-[#DDE1E6] leading-snug">"{service.whyUs}"</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </SectionCard>
 
@@ -185,20 +201,31 @@ export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
         title="3. Conversion Hooks"
         textToCopy={`Primary: ${copy.cta.primary}\nSupporting: ${copy.cta.supporting}\nUrgency: ${copy.cta.urgency}\nTrust: ${copy.cta.trust}`}
       >
-        <div className="flex flex-col items-center py-6 outline-none" contentEditable suppressContentEditableWarning>
-          <button className="px-8 py-3.5 bg-[#1A1C1E] dark:bg-[#F1F3F5] text-white dark:text-[#121619] text-sm font-sans font-bold uppercase tracking-widest rounded-full shadow-lg pointer-events-none mb-4 transition-colors">
-            {copy.cta.primary}
-          </button>
-          <p className="text-sm font-serif italic text-[#697077] dark:text-[#A2A9B0] mb-8 tracking-wide text-center max-w-md">{copy.cta.supporting}</p>
-          
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[#FFF5F5] dark:bg-[#2A1E1E] p-4 rounded-xl border border-[#FFD6D6] dark:border-[#5C3333] cursor-text transition-colors">
-              <span className="text-[10px] font-bold text-[#FF5F57] uppercase tracking-wider mb-2 block">Urgency Factor</span>
-              <p className="text-xs font-sans text-[#4D5358] dark:text-[#DDE1E6] leading-relaxed">{copy.cta.urgency}</p>
-            </div>
-            <div className="bg-[#F0FFF4] dark:bg-[#1E2A22] p-4 rounded-xl border border-[#C6F6D5] dark:border-[#335C41] cursor-text transition-colors">
-              <span className="text-[10px] font-bold text-[#28C840] uppercase tracking-wider mb-2 block">Trust Metric</span>
-              <p className="text-xs font-sans text-[#4D5358] dark:text-[#DDE1E6] leading-relaxed">{copy.cta.trust}</p>
+        <div className="flex flex-col outline-none overflow-hidden rounded-xl border border-[#DDE1E6] dark:border-[#343A3F] shadow-sm relative" contentEditable suppressContentEditableWarning>
+          <div className="absolute inset-0 z-0 bg-[#0052CC] dark:bg-[#003B99] opacity-5"></div>
+          <div className="relative z-10 flex flex-col items-center py-12 px-6 sm:px-12 text-center items-center justify-center">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1A1C1E] dark:text-[#F1F3F5] mb-3 leading-tight max-w-lg">
+              Ready to take the next step?
+            </h2>
+            <p className="text-sm sm:text-base font-sans text-[#4D5358] dark:text-[#A2A9B0] mb-8 max-w-md leading-relaxed">
+              {copy.cta.supporting}
+            </p>
+            
+            <button className="px-8 py-3.5 bg-[#0052CC] hover:bg-[#003B99] text-white text-sm font-sans font-bold uppercase tracking-widest rounded shadow-lg pointer-events-none mb-8 transition-colors flex items-center justify-center gap-2">
+              {copy.cta.primary} <ChevronRight className="w-4 h-4" />
+            </button>
+            
+            <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+              <div className="bg-white/80 dark:bg-[#1A1C1E]/80 backdrop-blur p-4 rounded-lg border border-[#FFD6D6] dark:border-[#5C3333] cursor-text transition-colors shadow-sm relative overflow-hidden group hover:border-[#FF5F57]">
+                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:scale-125 transition-transform"><Check className="w-8 h-8 text-[#FF5F57]" /></div>
+                <span className="text-[10px] font-bold text-[#FF5F57] uppercase tracking-wider mb-2 block flex items-center gap-1.5 relative z-10">Urgency Factor</span>
+                <p className="text-xs font-sans text-[#4D5358] dark:text-[#DDE1E6] leading-relaxed relative z-10">{copy.cta.urgency}</p>
+              </div>
+              <div className="bg-white/80 dark:bg-[#1A1C1E]/80 backdrop-blur p-4 rounded-lg border border-[#C6F6D5] dark:border-[#335C41] cursor-text transition-colors shadow-sm relative overflow-hidden group hover:border-[#28C840]">
+                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:scale-125 transition-transform"><Check className="w-8 h-8 text-[#28C840]" /></div>
+                <span className="text-[10px] font-bold text-[#28C840] uppercase tracking-wider mb-2 block flex items-center gap-1.5 relative z-10">Trust Metric</span>
+                <p className="text-xs font-sans text-[#4D5358] dark:text-[#DDE1E6] leading-relaxed relative z-10">{copy.cta.trust}</p>
+              </div>
             </div>
           </div>
         </div>
