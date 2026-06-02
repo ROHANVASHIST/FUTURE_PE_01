@@ -5,16 +5,17 @@ import {
   Laptop, Tablet, Smartphone, Edit3, Eye, Compass, CheckCircle, 
   MessageSquare, Send, Star, Lightbulb, Grid, Sparkles, AlertCircle,
   Menu, X, Sliders, Award, Users, Shield, Zap, Flame, Info, HelpCircle, 
-  BadgeCheck, BarChart3, Calculator, ZoomIn, Heart, ChevronLeft, ArrowRight
+  BadgeCheck, BarChart3, Calculator, ZoomIn, Heart, ChevronLeft, ArrowRight, ArrowLeft, Wrench
 } from 'lucide-react';
 
 interface Props {
   copy: GeneratedCopy;
   inputData: BusinessInput | null;
   onUpdateCopy: (updatedSection: any, sectionName: string) => void;
+  onOpenEditor?: () => void;
 }
 
-export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
+export default function CopyPreview({ copy, inputData, onUpdateCopy, onOpenEditor }: Props) {
   const [activeTab, setActiveTab] = useState<'live' | 'cards'>('live');
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [isEditable, setIsEditable] = useState(false);
@@ -505,6 +506,16 @@ export default function CopyPreview({ copy, inputData, onUpdateCopy }: Props) {
             <Grid className="w-3.5 h-3.5" />
             Content Outlines
           </button>
+          {onOpenEditor && (
+            <button
+              id="open-creator-from-preview"
+              onClick={onOpenEditor}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-[#0052CC] dark:text-[#4589ff] bg-[#0052CC]/5 dark:bg-[#4589ff]/5 border border-[#0052CC]/20 hover:bg-[#0052CC]/10 hover:border-[#0052CC]/40 shadow-sm ml-2 group"
+            >
+              <Wrench className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+              Open Website Creator
+            </button>
+          )}
         </div>
 
         {/* UTILITIES PER ACTIVE VIEW */}
