@@ -4,7 +4,7 @@ import CopyPreview from './components/CopyPreview';
 import ExportPanel from './components/ExportPanel';
 import { GeneratedCopy, BusinessInput } from './lib/schemas/copy-schema';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, X, Sliders, Moon, Sun, RotateCcw, ArrowLeft, Eye, Layout, Wrench, BadgeCheck, CheckCircle, Star, AlertCircle, Send, ChevronLeft, ArrowRight, Cpu, Globe, Activity, Terminal, Zap, Shield, Heart, User, ChevronDown, Rocket, ExternalLink, History, LogOut } from 'lucide-react';
+import { Sparkles, X, Sliders, Moon, Sun, RotateCcw, ArrowLeft, Eye, Layout, Wrench, BadgeCheck, CheckCircle, Star, AlertCircle, Send, ChevronLeft, ArrowRight, Cpu, Globe, Activity, Terminal, Zap, Shield, Heart, User, ChevronDown, Rocket, ExternalLink, History, LogOut, Layers, MousePointer2, BarChart3, Database, Info } from 'lucide-react';
 import { getDemoData } from './lib/mockCopy';
 
 const { inputData: defaultInput, copy: defaultCopy } = getDemoData();
@@ -16,6 +16,7 @@ export default function App() {
   const [inputData, setInputData] = useState<BusinessInput | null>(defaultInput);
   const [darkMode, setDarkMode] = useState(false);
   const [viewMode, setViewMode] = useState<'creator' | 'preview' | 'profile'>('creator');
+  const [activeModal, setActiveModal] = useState<{ title: string; content: string; type?: 'info' | 'blueprint' } | null>(null);
 
   useEffect(() => {
     if (darkMode) {
@@ -93,12 +94,28 @@ export default function App() {
   return (
     <div className="relative w-screen h-screen bg-[#F8F9FA] dark:bg-[#121416] text-[#1D1D20] dark:text-[#F1F3F5] font-sans overflow-hidden transition-colors selection:bg-[#0052CC] selection:text-white">
       
+      {/* ----------------- GLOBAL SYSTEM STATUS ----------------- */}
+      <div className="hidden lg:flex fixed top-0 inset-x-0 z-[110] h-6 bg-[#1A1C1E] dark:bg-black text-[8px] font-black uppercase tracking-[0.4em] text-white/40 items-center justify-between px-12 pointer-events-none">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span>Engine: Online</span>
+          </div>
+          <span>Lat: 12ms</span>
+          <span>SRV: Asia-Pacific-01</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span>UTC: {new Date().toISOString().split('T')[1].split('.')[0]}</span>
+          <span>v2.8.4-stable</span>
+        </div>
+      </div>
+
       {/* ----------------- GLOBAL NAVIGATION BAR ----------------- */}
       <AnimatePresence>
         {viewMode === 'creator' && (
           <motion.nav 
             initial={{ y: -100 }}
-            animate={{ y: 0 }}
+            animate={{ y: 24 }}
             exit={{ y: -100 }}
             className="fixed top-0 inset-x-0 z-[100] h-16 bg-white/70 dark:bg-[#0F1113]/70 backdrop-blur-xl border-b border-[#DDE1E6] dark:border-white/10 px-6 sm:px-12 flex items-center justify-between transition-all"
           >
@@ -113,8 +130,9 @@ export default function App() {
 
               <div className="hidden lg:flex items-center gap-6">
                 {[
-                  { label: 'Features', id: 'showcase-features' },
                   { label: 'Showcase', id: 'vertical-showcase' },
+                  { label: 'Themes', id: 'aesthetic-matrix' },
+                  { label: 'Plans', id: 'service-plans' },
                   { label: 'Workflow', id: 'design-workflow' },
                   { label: 'Blueprint', id: 'creator-form' }
                 ].map(link => (
@@ -461,11 +479,12 @@ export default function App() {
                   </div>
                 </motion.div>
 
-                <div id="creator-form" className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-32">
+                <div id="creator-form" className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-32 scroll-mt-24">
                   {/* Left Column: Form Section */}
                   <motion.div 
                     initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                     className="lg:col-span-7"
                   >
@@ -503,10 +522,31 @@ export default function App() {
                   {/* Right Column: Dynamic Showcase */}
                   <motion.div 
                     initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                     className="lg:col-span-5 space-y-8"
                   >
+                    {/* Live Statistics Bento */}
+                    <div className="p-8 rounded-[3rem] bg-indigo-600 text-white shadow-2xl relative overflow-hidden group">
+                       <div className="absolute top-0 right-0 p-4 opacity-10">
+                          <Activity className="w-40 h-40" />
+                       </div>
+                       <div className="relative z-10">
+                          <h4 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6">Live Engine Metadata</h4>
+                          <div className="grid grid-cols-2 gap-6">
+                             <div>
+                                <p className="text-3xl font-serif font-black">1.4s</p>
+                                <p className="text-[9px] font-bold uppercase tracking-widest opacity-70 mt-1">Avg. Generation</p>
+                             </div>
+                             <div>
+                                <p className="text-3xl font-serif font-black">99%</p>
+                                <p className="text-[9px] font-bold uppercase tracking-widest opacity-70 mt-1">SEO Fidelity</p>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+
                     <div className="p-10 rounded-[3rem] bg-[#1A1C1E] dark:bg-[#FFFFFF] text-white dark:text-[#1A1C1E] shadow-2xl relative overflow-hidden group">
                       <img 
                         src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop" 
@@ -538,26 +578,290 @@ export default function App() {
                         </button>
                       </div>
                     </div>
-
-                    <div className="p-10 rounded-[3rem] bg-white dark:bg-[#1A1C1E] border border-[#DDE1E6] dark:border-white/10 shadow-md">
-                      <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8 border-b border-gray-100 dark:border-white/5 pb-4">Architectural Components</h4>
-                      <div className="grid grid-cols-2 gap-6">
-                        {[
-                          { icon: Layout, label: 'Bento Grids', color: 'text-[#0052CC]' },
-                          { icon: Star, label: 'Social Proof', color: 'text-amber-500' },
-                          { icon: Eye, label: 'Theme Matrix', color: 'text-emerald-500' },
-                          { icon: Send, label: 'Lead Capture', color: 'text-sky-500' }
-                        ].map(({ icon: Icon, label, color }) => (
-                          <div key={label} className="flex items-center gap-3 p-2 group cursor-default">
-                            <div className={`w-10 h-10 rounded-xl bg-gray-50 dark:bg-white/5 flex items-center justify-center ${color} group-hover:scale-110 transition-transform`}>
-                              <Icon className="w-5 h-5" />
-                            </div>
-                            <span className="text-[11px] font-bold text-gray-600 dark:text-gray-300">{label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </motion.div>
+                </div>
+
+                {/* PARTNER ECOSYSTEM MARQUEE */}
+                <div className="mb-32 overflow-hidden py-12 border-y border-[#DDE1E6] dark:border-white/10">
+                   <div className="max-w-4xl mx-auto text-center mb-10">
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">Integrated with Global Infrastructure</p>
+                   </div>
+                   <motion.div 
+                     animate={{ x: [0, -1000] }}
+                     transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+                     className="flex items-center gap-24 whitespace-nowrap opacity-40 hover:opacity-100 transition-opacity"
+                   >
+                      {[
+                        'STRIPE_CONNECT', 'AWS_CLOUDFRONT', 'GEMINI_NEURAL_1.5', 'VERCEL_EDGE', 'REACT_STABLE', 'TYPESCRIPT_v5', 'ANTIGRAVITY_CORE', 'POSTGRES_SQL', 'DOCKER_CONTAINER'
+                      ].map(partner => (
+                        <span key={partner} className="text-xl font-serif font-black tracking-tighter text-[#1A1C1E] dark:text-white flex items-center gap-3">
+                           <div className="w-1.5 h-1.5 rounded-full bg-[#0052CC]"></div>
+                           {partner}
+                        </span>
+                      ))}
+                   </motion.div>
+                </div>
+
+                {/* TESTIMONIAL BENTO GRID */}
+                <div className="mb-40">
+                   <div className="text-center mb-16">
+                      <h3 className="text-4xl font-serif font-black tracking-tight text-[#1A1C1E] dark:text-white mb-4">Architectural Validations</h3>
+                      <p className="text-sm text-gray-500 font-medium">Insights from the global engineering collective.</p>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[250px]">
+                      <motion.div 
+                        whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }}
+                        className="md:col-span-8 p-10 rounded-[3rem] bg-white dark:bg-white/5 border border-[#DDE1E6] dark:border-white/10 shadow-sm flex flex-col justify-between"
+                      >
+                         <p className="text-2xl font-serif font-black dark:text-white leading-relaxed">"The Aura Engine redefined our entire onboarding protocol. The transition from raw data to a high-fidelity React blueprint was near-instant."</p>
+                         <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100"><img src="https://i.pravatar.cc/100?img=33" alt="" /></div>
+                            <div>
+                               <p className="text-sm font-black dark:text-white">Marcus Thorne</p>
+                               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">CTO • Stratos Digital</p>
+                            </div>
+                         </div>
+                      </motion.div>
+
+                      <motion.div 
+                        whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                        className="md:col-span-4 p-10 rounded-[3rem] bg-[#0052CC] text-white shadow-xl flex flex-col justify-between"
+                      >
+                         <p className="text-lg font-black leading-tight">"Unparalleled SEO precision. Our conversions spiked 40% after implementing the Aura localized copy blocks."</p>
+                         <div className="flex items-center gap-3">
+                            <Star className="w-4 h-4 fill-current text-yellow-400" />
+                            <Star className="w-4 h-4 fill-current text-yellow-400" />
+                            <Star className="w-4 h-4 fill-current text-yellow-400" />
+                            <Star className="w-4 h-4 fill-current text-yellow-400" />
+                            <Star className="w-4 h-4 fill-current text-yellow-400" />
+                         </div>
+                      </motion.div>
+
+                      <motion.div 
+                        whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                        className="md:col-span-4 p-10 rounded-[3rem] bg-[#1A1C1E] dark:bg-white text-white dark:text-[#1A1C1E] shadow-xl flex flex-col justify-between"
+                      >
+                         <p className="text-base font-black">"The minimal aesthetic is consistently perfect."</p>
+                         <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">Sarah Jenkins • Nordic Labs</p>
+                      </motion.div>
+
+                      <motion.div 
+                        whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                        className="md:col-span-8 p-10 rounded-[3rem] bg-indigo-500 text-white shadow-xl flex flex-col justify-between overflow-hidden relative"
+                      >
+                         <div className="absolute top-0 right-0 p-8 opacity-10"><Zap className="w-48 h-48" /></div>
+                         <p className="text-xl font-serif font-black relative z-10">"We generated 12 distinct localized portals in a single afternoon. The throughput efficiency is monumental."</p>
+                         <button className="w-fit px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">Read Case Study</button>
+                      </motion.div>
+                   </div>
+                </div>
+
+                {/* FAQ PROTOCOL SECTION */}
+                <div className="mb-40 max-w-4xl mx-auto">
+                   <div className="text-center mb-16">
+                      <h3 className="text-4xl font-serif font-black tracking-tight text-[#1A1C1E] dark:text-white mb-4">Neural Engine Decoded</h3>
+                      <p className="text-sm text-gray-500 font-medium">Standard procedural documentation for technical inquiries.</p>
+                   </div>
+                   
+                   <div className="space-y-4">
+                      {[
+                        { q: 'How does the neural synthesis work?', a: 'Our engine uses large context models to map your specific vertical data into a high-conversion visual matrix, generating both copy and design architecture simultaneously.' },
+                        { q: 'Can I export the raw React blueprints?', a: 'Yes, both Premium and Enterprise tiers include direct high-fidelity React code exports with pre-configured Tailwind utility classes.' },
+                        { q: 'What is the standard generation latency?', a: 'The primary synthesis block rendered in Indiranagar/Mumbai typically completes within 1.2s to 1.8s depending on engine load.' },
+                        { q: 'Is localization handled dynamically?', a: 'Absolutely. The Aura Engine detects regional nuances and city-specific keywords for 140+ global metropolitan hubs.' }
+                      ].map((faq, i) => (
+                        <div key={i} className="group p-8 rounded-[2rem] bg-white dark:bg-white/5 border border-[#DDE1E6] dark:border-white/10 hover:border-[#0052CC]/20 transition-all cursor-pointer">
+                           <div className="flex items-center justify-between mb-4">
+                              <h4 className="text-sm font-black text-[#1A1C1E] dark:text-white">{faq.q}</h4>
+                              <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-400 group-hover:rotate-90 transition-transform"><ArrowRight className="w-4 h-4" /></div>
+                           </div>
+                           <p className="text-xs text-gray-500 font-medium leading-relaxed max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500">{faq.a}</p>
+                        </div>
+                      ))}
+                   </div>
+                </div>
+
+
+                <AnimatePresence>
+                  {activeModal && (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-[#0F1113]/80 backdrop-blur-md"
+                      onClick={() => setActiveModal(null)}
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, y: 20 }}
+                        animate={{ scale: 1, y: 0 }}
+                        exit={{ scale: 0.9, y: 20 }}
+                        onClick={(e) => e.stopPropagation()}
+                        className={`w-full max-w-2xl bg-white dark:bg-[#1A1C1E] rounded-[3rem] overflow-hidden shadow-2xl relative border border-[#DDE1E6] dark:border-white/10 ${activeModal.type === 'blueprint' ? 'bg-gradient-to-br from-white to-blue-50 dark:from-[#1A1C1E] dark:to-indigo-950/20' : ''}`}
+                      >
+                        <div className="p-8 md:p-12">
+                          <div className="flex items-center justify-between mb-8">
+                             <div className="flex items-center gap-3">
+                                {activeModal.type === 'blueprint' ? (
+                                  <div className="w-10 h-10 rounded-xl bg-[#0052CC] flex items-center justify-center text-white">
+                                    <Rocket className="w-5 h-5" />
+                                  </div>
+                                ) : (
+                                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center text-[#0052CC]">
+                                    <Info className="w-5 h-5" />
+                                  </div>
+                                )}
+                                <h3 className="text-xl font-serif font-black dark:text-white tracking-tight">{activeModal.title}</h3>
+                             </div>
+                             <button onClick={() => setActiveModal(null)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400">
+                               <X className="w-6 h-6" />
+                             </button>
+                          </div>
+
+                          <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                            {activeModal.type === 'blueprint' ? (
+                              <div className="space-y-10">
+                                <div className="p-8 bg-gradient-to-br from-[#0052CC] to-[#5D3FD3] text-white rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                                  <motion.div 
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                    className="absolute -top-12 -right-12 opacity-10"
+                                  >
+                                    <Sparkles className="w-64 h-64" />
+                                  </motion.div>
+                                  <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-70">Aura Intelligence • Q3 Blueprint</p>
+                                  <h4 className="text-3xl font-serif font-black leading-tight mb-6">Neural Expansion <br />Protocol v2.0</h4>
+                                  <p className="text-sm opacity-90 leading-relaxed font-medium">Inside this transmission: The complete architectural mapping for high-throughput brand generation and neural synchronization strategies.</p>
+                                </div>
+
+                                <div className="space-y-6">
+                                  <div className="flex items-center justify-between border-b border-[#DDE1E6] dark:border-white/10 pb-4">
+                                     <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0052CC]">01 Technical Specifications</h5>
+                                     <span className="text-[9px] font-bold text-gray-400">LATENCY: 12ms</span>
+                                  </div>
+                                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                     {[
+                                       { label: 'Neural Engine', value: 'Gemini-1.5-Pro' },
+                                       { label: 'Context Window', value: '2M Tokens' },
+                                       { label: 'Synthesis Flow', value: 'Async Parallel' },
+                                       { label: 'Output Format', value: 'React/TSX/Tailwind' },
+                                       { label: 'SEO Density', value: '98th Percentile' },
+                                       { label: 'Region Lock', value: 'Decentralized' }
+                                     ].map(spec => (
+                                       <div key={spec.label} className="p-4 bg-[#F8F9FA] dark:bg-white/5 rounded-2xl border border-transparent hover:border-[#0052CC]/20 transition-all">
+                                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-wider mb-1">{spec.label}</p>
+                                          <p className="text-[11px] font-bold dark:text-white uppercase">{spec.value}</p>
+                                       </div>
+                                     ))}
+                                  </div>
+                                </div>
+
+                                <div className="space-y-6">
+                                  <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0052CC] border-b border-[#DDE1E6] dark:border-white/10 pb-4">02 Neural Architecture Flow</h5>
+                                  <div className="relative p-6 bg-[#1A1C1E] text-white rounded-[2rem] overflow-hidden">
+                                     <div className="flex items-center justify-between relative z-10">
+                                        {[
+                                          { icon: Database, label: 'Data Input' },
+                                          { icon: Cpu, label: 'Neural Map' },
+                                          { icon: Layout, label: 'Visual Matrix' },
+                                          { icon: Zap, label: 'Deploy' }
+                                        ].map((step, i) => (
+                                          <div key={step.label} className="flex flex-col items-center gap-3">
+                                             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                                                <step.icon className="w-4 h-4" />
+                                             </div>
+                                             <p className="text-center text-[8px] font-black uppercase tracking-widest leading-none">{step.label}</p>
+                                          </div>
+                                        ))}
+                                     </div>
+                                     <div className="absolute top-1/2 left-10 right-10 h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-y-8"></div>
+                                  </div>
+                                </div>
+
+                                <div className="space-y-6">
+                                  <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0052CC] border-b border-[#DDE1E6] dark:border-white/10 pb-4">03 Strategic Roadmap</h5>
+                                  <div className="space-y-3">
+                                     {[
+                                       'Dynamic API endpoint orchestration for headless brand scaling.',
+                                       'Voice-to-Blueprint synthesis using real-time audio mapping.',
+                                       'Collaborative Neural Canvas for multi-agent design refinement.',
+                                       'One-click On-Premise GPU cluster deployment hooks.'
+                                     ].map((item, i) => (
+                                       <div key={i} className="flex gap-4 p-4 hover:bg-gray-50 dark:hover:bg-white/5 rounded-2xl transition-all">
+                                          <div className="text-[10px] font-black text-[#0052CC] opacity-30 italic">0{i+1}</div>
+                                          <p className="text-xs text-gray-500 font-medium leading-relaxed">{item}</p>
+                                       </div>
+                                     ))}
+                                  </div>
+                                </div>
+
+                                <div className="p-8 bg-black text-white rounded-[2rem] text-center">
+                                   <p className="text-[9px] font-black uppercase tracking-[0.4em] mb-4 text-[#0052CC]">Transmission Verified</p>
+                                   <p className="text-xs opacity-60 leading-relaxed mb-6 font-medium">This document is encrypted and authorized for the registered entity only. Unauthorized reproduction will trigger a protocol reset.</p>
+                                   <div className="flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-widest opacity-40">
+                                      <span>SECURE_NODE</span>
+                                      <div className="w-1 h-1 rounded-full bg-white"></div>
+                                      <span>HASH_v5.4.1</span>
+                                   </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed leading-7">
+                                {activeModal.content}
+                              </p>
+                            )}
+                          </div>
+
+                          <button 
+                            onClick={() => setActiveModal(null)}
+                            className="mt-12 w-full py-4 bg-[#1A1C1E] dark:bg-white text-white dark:text-[#1A1C1E] rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.02] transition-all shadow-xl"
+                          >
+                            Close Protocol
+                          </button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+
+                   <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
+                      <div className="max-w-2xl">
+                         <h3 className="text-4xl font-serif font-black tracking-tight text-[#1A1C1E] dark:text-white mb-4">Aesthetic Matrix V2</h3>
+                         <p className="text-sm text-gray-500 font-medium leading-relaxed">Toggle between high-fidelity visual ecosystems. Each template recalibrates spacing, typography, and color theory for your specific vertical.</p>
+                      </div>
+                      <div className="flex items-center gap-4 p-1.5 bg-white dark:bg-white/5 border border-[#DDE1E6] dark:border-white/10 rounded-2xl">
+                         {['Dynamic', 'Minimal', 'Brutalist'].map(t => (
+                           <button key={t} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${t === 'Dynamic' ? 'bg-[#0052CC] text-white shadow-lg' : 'text-gray-400 hover:text-gray-600'}`}>
+                             {t}
+                           </button>
+                         ))}
+                      </div>
+                   </div>
+
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {[
+                        { title: 'Velvet Slate', desc: 'Deep charcoal & gold accents for luxury service models.', icon: Layers },
+                        { title: 'Neon Pulse', desc: 'High-contrast vibrant palettes for tech and agencies.', icon: Zap },
+                        { title: 'Nordic Clean', desc: 'Ultra-minimalist white-space focus for boutiques.', icon: MousePointer2 },
+                        { title: 'Global Tech', desc: 'Enterprise-grade blueprints for software solutions.', icon: Globe }
+                      ].map((theme, i) => (
+                        <motion.div 
+                          key={theme.title}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className="group p-8 rounded-[2.5rem] bg-white dark:bg-white/5 border border-[#DDE1E6] dark:border-white/10 hover:border-[#0052CC]/30 transition-all cursor-pointer shadow-sm hover:shadow-xl"
+                        >
+                           <div className="w-12 h-12 rounded-2xl bg-[#F2F4F8] dark:bg-white/5 flex items-center justify-center text-[#1A1C1E] dark:text-white mb-6 group-hover:scale-110 transition-transform">
+                              <theme.icon className="w-6 h-6" />
+                           </div>
+                           <h4 className="text-sm font-black text-[#1A1C1E] dark:text-white mb-2">{theme.title}</h4>
+                           <p className="text-[11px] text-gray-500 leading-relaxed font-medium">{theme.desc}</p>
+                        </motion.div>
+                      ))}
+                   </div>
                 </div>
 
                 {/* Vertical Showcase Gallery */}
@@ -618,6 +922,50 @@ export default function App() {
                       </motion.div>
                     ))}
                   </div>
+                </div>
+
+                {/* SERVICE PLANS / ARCHITECTURAL TIERS */}
+                <div id="service-plans" className="mb-32 scroll-mt-24">
+                   <div className="text-center mb-16">
+                      <h3 className="text-4xl font-serif font-black tracking-tight text-[#1A1C1E] dark:text-white mb-4">Select Your Architecture</h3>
+                      <p className="text-sm text-gray-500 font-medium">Subscription protocols for high-performance brand scaling.</p>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {[
+                        { tier: 'Standard', price: 'Free', features: ['3 Dynamic Blueprints', 'Standard SEO Mapping', 'Export React Code'], color: 'bg-white dark:bg-white/5' },
+                        { tier: 'Premium', price: '$49', features: ['Unlimited Blueprint Nodes', 'Neural Copy Generation', 'Custom Deployment Hook', 'Priority GPU Buffer'], color: 'bg-[#0052CC] text-white', accent: true },
+                        { tier: 'Enterprise', price: 'Custom', features: ['Dedicated Engineering Rep', 'On-premise Engine Hook', 'Unlimited Historical Vault'], color: 'bg-white dark:bg-white/5' }
+                      ].map((plan, i) => (
+                        <motion.div 
+                          key={plan.tier}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className={`p-10 rounded-[3rem] border border-[#DDE1E6] dark:border-white/10 shadow-xl flex flex-col justify-between ${plan.color} ${plan.accent ? 'scale-105 z-10' : ''}`}
+                        >
+                           <div>
+                              <div className="flex justify-between items-start mb-10">
+                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 text-inherit">{plan.tier}</span>
+                                 {plan.accent && <Zap className="w-5 h-5 text-yellow-400" />}
+                              </div>
+                              <h4 className="text-5xl font-serif font-black mb-8">{plan.price}</h4>
+                              <div className="space-y-4 mb-12 text-inherit">
+                                 {plan.features.map(f => (
+                                   <div key={f} className="flex items-center gap-3">
+                                      <CheckCircle className={`w-4 h-4 ${plan.accent ? 'text-blue-200' : 'text-[#0052CC]'}`} />
+                                      <span className="text-[11px] font-bold opacity-80">{f}</span>
+                                   </div>
+                                 ))}
+                              </div>
+                           </div>
+                           <button className={`w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${plan.accent ? 'bg-white text-[#0052CC] hover:scale-105 shadow-2xl' : 'bg-[#F2F4F8] dark:bg-white/10 text-gray-600 dark:text-gray-300 hover:bg-[#0052CC] hover:text-white'}`}>
+                              Upgrade Account
+                           </button>
+                        </motion.div>
+                      ))}
+                   </div>
                 </div>
 
                 <div id="design-workflow" className="mb-32">
@@ -693,7 +1041,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Neural Design Workflow ... existing content ... */}
+
 
                 {/* Final Call to Action Section */}
                 <div className="mb-32">
@@ -712,7 +1060,10 @@ export default function App() {
                              Initialize Blueprint Now
                            </button>
                            <button 
-                             onClick={() => setError("Our engineering team has been notified. We will reach out to rohanvashist01@gmail.com shortly.")}
+                             onClick={() => setActiveModal({ 
+                                title: "Consultation Request Protocol", 
+                                content: "Your request for a high-priority architectural consultation has been logged. Our certified engineering lead for the Asia-Pacific sector will review your current blueprint and initiate a neural sync with your provided contact credentials (rohanvashist01@gmail.com) within the next four standard cycles." 
+                              })}
                              className="px-8 py-5 bg-transparent border border-white/30 hover:bg-white/10 rounded-2xl font-black text-xs uppercase tracking-widest transition-all"
                            >
                              Consult Engineering Team
@@ -758,9 +1109,107 @@ export default function App() {
                     </motion.div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Creator Footer */}
+
+                {/* COMPREHENSIVE PLATFORM FOOTER */}
+                <footer className="mt-40 mb-12 py-20 border-t border-[#DDE1E6] dark:border-white/10">
+                   <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                      <div className="col-span-1 md:col-span-1">
+                         <div className="flex items-center gap-2 text-[#1A1C1E] dark:text-white font-black text-sm tracking-tight mb-6">
+                            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#0052CC] to-[#5D3FD3] flex items-center justify-center text-white">A</div>
+                            <span>Aura Intelligence</span>
+                         </div>
+                         <p className="text-xs text-gray-400 font-medium leading-relaxed">The premier destination for high-fidelity architectural brand blueprints and neural copy generation.</p>
+                      </div>
+                      
+                      {[
+                        { 
+                          title: 'Protocol', 
+                          links: [
+                            { label: 'Neural Engine', target: 'design-workflow' },
+                            { label: 'Theme Matrix', target: 'aesthetic-matrix' },
+                            { label: 'API Interface', target: 'creator-form' },
+                            { label: 'Status', alert: 'All Systems Operational: v2.8.4-stable' }
+                          ]
+                        },
+                        { 
+                          title: 'Showcase', 
+                          links: [
+                            { label: 'Spas', target: 'vertical-showcase' },
+                            { label: 'Tech Agencies', target: 'vertical-showcase' },
+                            { label: 'Fine Dining', target: 'vertical-showcase' },
+                            { label: 'Boutiques', target: 'vertical-showcase' }
+                          ]
+                        },
+                        { 
+                          title: 'Company', 
+                          links: [
+                            { label: 'Architecture', target: 'aura-hero' },
+                            { label: 'Engineering', target: 'design-workflow' },
+                            { label: 'Privacy', alert: 'Privacy Protocol 1.4: All generation data is sanitized locally.' },
+                            { label: 'Legal', alert: 'Aura Blueprint License v2.0: Authorized for commercial use.' }
+                          ]
+                        }
+                      ].map(group => (
+                        <div key={group.title}>
+                           <h5 className="text-[10px] font-black uppercase tracking-widest text-[#1A1C1E] dark:text-white mb-6 underline underline-offset-8 decoration-[#0052CC]/30">{group.title}</h5>
+                           <ul className="space-y-3">
+                                {group.links.map((l: any) => (
+                                  <li key={l.label}>
+                                    <button 
+                                      onClick={() => {
+                                        if (l.target) scrollToSection(l.target);
+                                        if (l.alert) {
+                                          setError(l.alert);
+                                          setActiveModal({ title: l.label, content: l.alert });
+                                        } else {
+                                          setActiveModal({ title: l.label, content: `Accessing the ${l.label} interface. This terminal module provides high-fidelity specifications for ${l.label.toLowerCase()} architecture and neural mapping protocols.` });
+                                        }
+                                      }}
+                                      className="text-xs text-gray-400 hover:text-[#0052CC] transition-colors text-left"
+                                    >
+                                      {l.label}
+                                    </button>
+                                  </li>
+                                ))}
+                             </ul>
+                          </div>
+                        ))}
+                        
+                        <div className="col-span-1">
+                           <h5 className="text-[10px] font-black uppercase tracking-widest text-[#1A1C1E] dark:text-white mb-6 underline underline-offset-8 decoration-[#0052CC]/30">Neural Dispatch</h5>
+                           <p className="text-xs text-gray-400 font-medium mb-6">Receive architectural updates and system patch notes directly.</p>
+                           <div className="relative">
+                              <input 
+                                type="email" 
+                                placeholder="rohanvashist01@gmail.com" 
+                                className="w-full h-12 bg-[#F2F4F8] dark:bg-white/5 border border-[#DDE1E6] dark:border-white/10 rounded-xl px-4 text-xs font-medium focus:border-[#0052CC] transition-colors outline-none"
+                              />
+                              <button 
+                                onClick={() => {
+                                  setError("Subscription protocol active. Welcome to Aura Dispatch.");
+                                  setActiveModal({
+                                    title: "Blueprint Newsletter Synchronized",
+                                    content: "Your entry into the neural design collective has been verified.",
+                                    type: "blueprint"
+                                  });
+                                }}
+                                className="absolute right-2 top-2 h-8 w-8 bg-[#0052CC] text-white rounded-lg flex items-center justify-center hover:scale-105 transition-all"
+                              >
+                                 <Send className="w-3.5 h-3.5" />
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-12 border-t border-gray-100 dark:border-white/5">
+                        <div className="flex items-center gap-4">
+                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                           <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">All Systems Operational</span>
+                        </div>
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">© 2026 Aura Intelligence Systems • Part of the Antigravity Network</p>
+                     </div>
+                  </footer>
+
               <footer className="max-w-6xl mx-auto px-6 py-16 border-t border-[#DDE1E6] dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
                 <div className="flex items-center gap-10">
                   <div className="flex items-center gap-2 text-[#1A1C1E] dark:text-white group cursor-pointer">
