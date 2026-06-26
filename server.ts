@@ -13,6 +13,17 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Download Guidelines PDF
+  app.get("/api/download-guidelines", (req, res) => {
+    const filePath = path.join(process.cwd(), "public", "Frontend_Battle_2026_Guidelines.pdf");
+    res.download(filePath, "Frontend_Battle_2026_Guidelines.pdf", (err) => {
+      if (err) {
+        console.error("PDF download failed:", err);
+        res.status(404).send("Error downloading file: guidelines PDF is currently rebuilding or unavailable.");
+      }
+    });
+  });
+
   // API Route
   app.post("/api/generate", async (req, res) => {
     try {

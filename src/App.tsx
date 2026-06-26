@@ -4,7 +4,7 @@ import CopyPreview from './components/CopyPreview';
 import ExportPanel from './components/ExportPanel';
 import { GeneratedCopy, BusinessInput } from './lib/schemas/copy-schema';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, X, Sliders, Moon, Sun, RotateCcw, ArrowLeft, Eye, Layout, Wrench, BadgeCheck, CheckCircle, Star, AlertCircle, Send, ChevronLeft, ArrowRight, Cpu, Globe, Activity, Terminal, Zap, Shield, Heart, User, ChevronDown, Rocket, ExternalLink, History, LogOut, Layers, MousePointer2, BarChart3, Database, Info } from 'lucide-react';
+import { Sparkles, X, Sliders, Moon, Sun, RotateCcw, ArrowLeft, Eye, Layout, Wrench, BadgeCheck, CheckCircle, Star, AlertCircle, Send, ChevronLeft, ArrowRight, Cpu, Globe, Activity, Terminal, Zap, Shield, Heart, User, ChevronDown, Rocket, ExternalLink, History, LogOut, Layers, MousePointer2, BarChart3, Database, Info, FileText, Download } from 'lucide-react';
 import { getDemoData } from './lib/mockCopy';
 
 const { inputData: defaultInput, copy: defaultCopy } = getDemoData();
@@ -793,6 +793,23 @@ export default function App() {
                                        </div>
                                      ))}
                                   </div>
+                                </div>
+
+                                <div className="p-8 bg-[#0052CC]/10 dark:bg-white/5 border border-dashed border-[#0052CC]/40 rounded-[2rem] text-center space-y-4">
+                                   <div className="mx-auto w-12 h-12 rounded-full bg-[#0052CC]/20 flex items-center justify-center text-[#0052CC]">
+                                      <FileText className="w-5 h-5" />
+                                   </div>
+                                   <h5 className="text-xs font-black uppercase tracking-wider text-[#1A1C1E] dark:text-white">Frontend Battle 2026 Guidelines PDF</h5>
+                                   <p className="text-[11px] text-gray-500 max-w-md mx-auto leading-relaxed">
+                                     The official 2-page detailed blueprint, criteria checklist, and presentation rules for the single-round design challenge.
+                                   </p>
+                                   <a 
+                                     href="/api/download-guidelines" 
+                                     download="Frontend_Battle_2026_Guidelines.pdf"
+                                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#0052CC] text-white rounded-xl font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all cursor-pointer"
+                                   >
+                                      <Download className="w-3.5 h-3.5" /> Download Competition PDF
+                                   </a>
                                 </div>
 
                                 <div className="p-8 bg-black text-white rounded-[2rem] text-center">
